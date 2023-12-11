@@ -3,35 +3,34 @@ import { CreateDoctorDto, DoctorDatasource, DoctorEntity, UpdateDoctorDto } from
 
 
 
-
 export class  DoctorDatasourceImpl implements DoctorDatasource {
 
   async create( createDoctorDto: CreateDoctorDto ): Promise<DoctorEntity> {
-    const Doctor = await prisma.Doctor.create({
+    const doctor = await prisma.doctor.create({
       data: createDoctorDto!
     });
 
-    return DoctorEntity.fromObject( Doctor );
+    return DoctorEntity.fromObject( doctor );
   }
 
   async getAll(): Promise<DoctorEntity[]> {
-    const Doctors = await prisma.Doctor.findMany();
-    return Doctors.map( Doctor => DoctorEntity.fromObject(Doctor) );
+    const doctors = await prisma.doctor.findMany();
+    return doctors.map( doctor => DoctorEntity.fromObject(doctor) );
   }
 
   async findById( id: number ): Promise<DoctorEntity> {
-    const Doctor = await prisma.Doctor.findFirst({
+    const doctor = await prisma.doctor.findFirst({
       where: { id }
     });
 
-    if ( !Doctor ) throw `Doctor with id ${ id } not found`;
-    return DoctorEntity.fromObject(Doctor);
+    if ( !doctor ) throw `doctor with id ${ id } not found`;
+    return DoctorEntity.fromObject(doctor);
   }
 
   async updateById( updateDoctorDto: UpdateDoctorDto ): Promise<DoctorEntity> {
     await this.findById( updateDoctorDto.id );
     
-    const updatedDoctor = await prisma.Doctor.update({
+    const updatedDoctor = await prisma.doctor.update({
       where: { id: updateDoctorDto.id },
       data: updateDoctorDto!.values
     });
@@ -41,7 +40,7 @@ export class  DoctorDatasourceImpl implements DoctorDatasource {
 
   async deleteById( id: number ): Promise<DoctorEntity> {
     await this.findById( id );
-    const deleted = await prisma.Doctor.delete({
+    const deleted = await prisma.doctor.delete({
       where: { id }
     });
 
